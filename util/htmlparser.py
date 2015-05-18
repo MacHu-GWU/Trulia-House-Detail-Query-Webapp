@@ -37,6 +37,7 @@ class HTMLParser():
             "lot_size": None,
             "bedroom": None,
             "bathroom": None,
+            "partial_bathroom": None,
             "status": None,
             "heating": None,
             "exterior_walls": None,
@@ -66,9 +67,13 @@ class HTMLParser():
                 results["bedroom"] = self._int_filter(field)
                 
             ## 洗手间
-            elif "bathroom" in field:
+            elif ("bathroom" in field) and ("partial" not in field):
                 results["bathroom"] = self._int_filter(field)
-                
+
+            ## 小洗手间
+            elif "partial bathroom" in field:
+                results["partial_bathroom"] = self._int_filter(field)
+
             ## 市场状态
             elif "status" in field:
                 results["status"] = field.split(":")[-1].strip()
