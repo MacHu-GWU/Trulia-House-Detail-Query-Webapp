@@ -75,23 +75,51 @@ class HTMLParser():
                 results["partial_bathroom"] = self._int_filter(field)
 
             ## 市场状态
-            elif "status" in field:
+            elif "status:" in field:
                 results["status"] = field.split(":")[-1].strip()
                 
             ## 供暖方式
-            elif "heating" in field:
+            elif "heating:" in field:
                 results["heating"] = field.split(":")[-1].strip()
                 
-            ## 外墙
-            elif "exterior walls" in field:
-                results["exterior_walls"] = field.split(":")[-1].strip()
+            ## HVAC
+            elif "a/c:" in field:
+                results["AC"] = field.split(":")[-1].strip()
                 
+            ## 外墙
+            elif "exterior walls:" in field:
+                results["exterior_walls"] = field.split(":")[-1].strip()
+            
+            ## 房顶
+            elif "roof:" in field:
+                results["roof"] = field.split(":")[-1].strip()
+
+            ## 地下室
+            elif "basement:" in field:
+                results["basement"] = field.split(":")[-1].strip()
+          
             ## 建造年份
             elif "built in" in field:
                 results["build_year"] = self._int_filter(field)
+            
+            ## 风格
+            elif "style:" in field:
+                results["style"] = field.split(":")[-1].strip()
+            
+            ## 建造方式
+            elif "construction:" in field:
+                results["construction"] = field.split(":")[-1].strip()
+            
+            ## 停车
+            elif "parking:" in field:
+                results["parking"] = field.split(":")[-1].strip()
                 
+            ## 泳池
+            elif "pool:" in field:
+                results["pool"] = field.split(":")[-1].strip()    
+        
             ## County
-            elif "county" in field:
+            elif "county:" in field:
                 results["county"] = field.split(":")[-1].strip()
                 
         for key in list(results.keys()):
@@ -144,7 +172,10 @@ class HTMLParser():
         except:
             pass
         
-        return data
+        if len(data) == 0:
+            return None
+        else:
+            return data
         
 htmlparser = HTMLParser()
 

@@ -7,6 +7,7 @@ This is a web app you can use to find house detail information by address + zipc
 from util import *
 from angora.LINEARSPIDER.simplecrawler import spider
 from angora.DATA.js import dump_js
+import pandas as pd
 import bottle
 import datetime
 import os
@@ -51,9 +52,24 @@ def get_trulia_result():
                 row.append(data)
             except:
                 pass
-    dump_js(df, r"user_uploaded\%s.json" % filename)
+            
     
-    payload.data["batch_query_result"] = "%s.json" % filename
+    columns = set()
+    for record in df:
+        for key in record[2]:
+            columns.add(key)
+    columns = list(columns)
+    
+    output = list()
+    for record in df:
+        row = [record[0], record[1]]
+        for key in columns:
+            row.append(record[2].get(key))
+        output.append(row)
+    output = pd.DataFrame(output, columns=["original_address", "original_zipcode"]+columns)
+    output.to_csv(r"user_uploaded\%s.csv" % filename, index=False)
+    
+    payload.data["batch_query_result"] = "%s.csv" % filename
     return bottle.template("index", payload.data)
 
 @bottle.route("/<filename>")
@@ -68,4 +84,4 @@ if __name__ == "__main__":
         os.mkdir("user_uploaded")
     except:
         pass
-    bottle.run(host="10.255.145.57", port=8080, debug=True)
+    bottle.run(host="localhost", port=12001, debug=False)

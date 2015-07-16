@@ -13,7 +13,7 @@
 </form>
 
 %if batch_query_result:
-	<a href={{batch_query_result}}>download json</a>
+	<a href={{batch_query_result}}>download csv</a>
 %else:
 	<a href=example_input.txt>click here to view sample tab seperated csv file</a>
 %end
