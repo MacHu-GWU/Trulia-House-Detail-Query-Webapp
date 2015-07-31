@@ -11,6 +11,7 @@ import pandas as pd
 import bottle
 import datetime
 import os
+from pprint import pprint as ppt
 
 class Payload():
     def __init__(self):
@@ -49,10 +50,14 @@ def get_trulia_result():
         if html:
             try:
                 data = htmlparser.get_house_detail(html)
-                row.append(data)
+                if data:
+                    row.append(data)
+                else:
+                    row.append(dict())
             except:
                 pass
-            
+        else:
+            row.append(dict())    
     
     columns = set()
     for record in df:
